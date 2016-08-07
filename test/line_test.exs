@@ -2,6 +2,12 @@ defmodule GherkinLineTest do
   use ExUnit.Case
   doctest Gherkin.Line
 
+  test ".trimmed_text\\1 strips the leading whitespace" do
+    line = %Gherkin.Line{text: "    Scenario: Hello world\n"}
+
+    assert Gherkin.Line.trimmed_text(line) == "Scenario: Hello world\n"
+  end
+
   test ".is_comment?\\1 returns true if the line is a comment" do
     line = %Gherkin.Line{text: "# This is a comment", line_number: 14}
 
