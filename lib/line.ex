@@ -13,6 +13,10 @@ defmodule Gherkin.Line do
     match_title_line(line, Gherkin.Dialect.feature_keywords(language))
   end
 
+  def is_scenario_header?(line, language \\ "en") do
+    match_title_line(line, Gherkin.Dialect.scenario_keywords(language))
+  end
+
   defp match_title_line(line, keywords) do
     keyword = Enum.find(keywords, fn(keyword) -> starts_with?(line, "#{keyword}: ") end)
     !!keyword
