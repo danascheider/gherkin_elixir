@@ -39,6 +39,10 @@ defmodule Gherkin.Line do
     starts_with?(line, "|") && ends_with?(line, "|")
   end
 
+  def is_tags?(line) do
+    starts_with?(line, "@")
+  end
+
   def empty?(line), do: trimmed_text(line) == ""
 
   def is_docstring_separator?(line) do

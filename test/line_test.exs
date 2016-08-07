@@ -110,6 +110,18 @@ defmodule GherkinLineTest do
     assert Gherkin.Line.is_step?(line, "af") == false
   end
 
+  test ".is_tags?\\1 returns true if the line contains tags" do
+    line = %Gherkin.Line{text: "    @foo @bar"}
+
+    assert Gherkin.Line.is_tags?(line) == true
+  end
+
+  test ".is_tags?\\1 returns false if the line does not contain tags" do
+    line = %Gherkin.Line{text: "Feature: Hello world"}
+
+    assert Gherkin.Line.is_tags?(line) == false
+  end
+
   test ".empty?\\1 returns true if the line is empty" do
     line = %Gherkin.Line{text: "  "}
 
