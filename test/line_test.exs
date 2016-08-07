@@ -14,6 +14,12 @@ defmodule GherkinLineTest do
     assert Gherkin.Line.is_comment?(line) == false
   end
 
+  assert ".is_examples_header?\\2 returns true if the line is an examples header" do
+    line = %Gherkin.Line{text: "    Ejemplos:"}
+
+    assert Gherkin.Line.is_examples_header?(line, "es") == true
+  end
+
   test ".is_language_header?\\1 returns true if the line is a language header" do
     line = %Gherkin.Line{text: "# language: ja"}
 
