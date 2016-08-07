@@ -122,6 +122,18 @@ defmodule GherkinLineTest do
     assert Gherkin.Line.is_docstring_separator?(line) == true
   end
 
+  test ".is_eof?\\1 returns true if the line has no text" do
+    line = %Gherkin.Line{text: nil}
+
+    assert Gherkin.Line.is_eof?(line) == true
+  end
+
+  test ".is_eof?\\1 returns true if the line has text" do
+    line = %Gherkin.Line{text: ""}
+
+    assert Gherkin.Line.is_eof?(line) == false
+  end
+
   test ".is_table_row?\\1 returns true if the line is a table row" do
     line = %Gherkin.Line{text: "      | Foo    | Bar   |"}
 

@@ -9,6 +9,8 @@ defmodule Gherkin.Line do
     match_title_line(line, Gherkin.Dialect.background_keywords(language))
   end
 
+  def is_eof?(line), do: line.text == nil
+
   def is_examples_header?(line, language \\ "en") do
     match_title_line(line, Gherkin.Dialect.examples_keywords(language))
   end
