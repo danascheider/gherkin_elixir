@@ -23,6 +23,12 @@ defmodule Gherkin.Line do
 
   def empty?(line), do: trimmed_text(line) == ""
 
+  def is_docstring_separator?(line) do
+    separator = ~r/^(\"\"\")|(```)/
+
+    Regex.match?(separator, trimmed_text(line))
+  end
+
   defp match_title_line(line, keywords) do
     keyword = Enum.find(keywords, fn(keyword) -> starts_with?(line, "#{keyword}: ") end)
     !!keyword
