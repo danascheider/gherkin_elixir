@@ -7,6 +7,10 @@ defmodule Gherkin.Line do
 
   def is_comment?(line), do: starts_with?(line, "#")
 
+  def is_background_header?(line, language \\ "en") do
+    match_title_line(line, Gherkin.Dialect.background_keywords(language))
+  end
+
   def is_language_header?(line), do: Regex.match?(~r/\# language\: (.*)/, line.text)
 
   def is_feature_header?(line, language \\ "en") do

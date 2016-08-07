@@ -62,6 +62,18 @@ defmodule GherkinLineTest do
     assert Gherkin.Line.is_scenario_outline_header?(line, "en") == false
   end
 
+  test ".is_background_header?\\2 returns true if the line is a background header" do
+    line = %Gherkin.Line{text: "Contesto: "}
+
+    assert Gherkin.Line.is_background_header?(line, "it") == true
+  end
+
+  test ".is_background_header?\\2 returns false if the line is not a background header" do
+    line = %Gherkin.Line{text: " Feature: Foobar"}
+
+    assert Gherkin.Line.is_background_header?(line, "en") == false
+  end
+
   test ".is_step?\\2 returns true if the line is a step" do
     line = %Gherkin.Line{text: "Quando clicco su 'Login'"}
 
