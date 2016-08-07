@@ -20,6 +20,12 @@ defmodule GherkinLineTest do
     assert Gherkin.Line.is_examples_header?(line, "es") == true
   end
 
+  assert ".is_examples_header?\\2 returns false if the line is not an examples header" do
+    line = %Gherkin.Line{text: "    Ejemplos:"}
+
+    assert Gherkin.Line.is_examples_header?(line, "en") == false
+  end
+
   test ".is_language_header?\\1 returns true if the line is a language header" do
     line = %Gherkin.Line{text: "# language: ja"}
 
@@ -115,6 +121,8 @@ defmodule GherkinLineTest do
 
     assert Gherkin.Line.is_docstring_separator?(line) == true
   end
+
+  test ".is_table_row?\\1 returns true if the line is a table row" do
 
   test ".is_docstring_separator?\\1 returns false if the line is not a docstring separator" do
     line = %Gherkin.Line{text: " ... "}
