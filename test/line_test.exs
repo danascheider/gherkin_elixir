@@ -13,4 +13,16 @@ defmodule GherkinLineTest do
 
     assert Gherkin.Line.is_comment(line) == false
   end
+
+  test ".is_language_header returns true if the line is a language header" do
+    line = %Gherkin.Line{text: "# language: ja"}
+
+    assert Gherkin.Line.is_language_header(line) == true
+  end
+
+  test ".is_language_header returns false if the line is not a language header" do
+    line = %Gherkin.Line{text: "  # language is English"}
+
+    assert Gherkin.Line.is_language_header(line) == false
+  end
 end

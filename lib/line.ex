@@ -6,4 +6,6 @@ defmodule Gherkin.Line do
   def starts_with?(line, keyword), do: trimmed_text(line) |> String.starts_with?(keyword)
 
   def is_comment(line), do: starts_with?(line, "#")
+
+  def is_language_header(line), do: Regex.match?(~r/\# language\: (.*)/, line.text)
 end
