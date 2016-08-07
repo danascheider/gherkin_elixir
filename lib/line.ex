@@ -21,6 +21,8 @@ defmodule Gherkin.Line do
     match_step_line(line, Gherkin.Dialect.step_keywords(language))
   end
 
+  def empty?(line), do: trimmed_text(line) == ""
+
   defp match_title_line(line, keywords) do
     keyword = Enum.find(keywords, fn(keyword) -> starts_with?(line, "#{keyword}: ") end)
     !!keyword

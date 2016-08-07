@@ -55,4 +55,16 @@ defmodule GherkinLineTest do
 
     assert Gherkin.Line.is_step?(line, "it") == true
   end
+
+  test ".empty? returns true if the line is empty" do
+    line = %Gherkin.Line{text: "  "}
+
+    assert Gherkin.Line.empty?(line) == true
+  end
+
+  test ".empty? returns false if the line is not empty" do
+    line = %Gherkin.Line{text: "    This line is not empty"}
+
+    assert Gherkin.Line.empty?(line) == false
+  end
 end
