@@ -37,4 +37,10 @@ defmodule GherkinLineTest do
 
     assert Gherkin.Line.is_feature_header?(line, "en") == false
   end
+
+  test ".is_scenario_header? returns true if the line is a scenario header" do
+    line = %Gherkin.Line{text: "Scenario: User logs in"}
+
+    assert Gherkin.Line.is_scenario_header(line, "en") == true
+  end
 end
