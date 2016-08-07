@@ -60,4 +60,8 @@ defmodule DialectTest do
   test ".when_keywords\\1 returns the when keywords for the given language" do
     assert Gherkin.Dialect.when_keywords("it") == ["* ", "Quando "]
   end
+
+  test ".step_keywords\\1 returns all the step keywords for the given language" do
+    assert Gherkin.Dialect.step_keywords("en") == ["* ", "Given ", "When ", "Then ", "And ", "But "]
+  end
 end

@@ -46,6 +46,10 @@ defmodule Gherkin.Dialect do
 
   def when_keywords(dialect), do: fetch(dialect, :when)
 
+  def step_keywords(dialect) do
+    given_keywords(dialect) ++ when_keywords(dialect) ++ then_keywords(dialect) ++ and_keywords(dialect) ++ but_keywords(dialect) |> Enum.uniq
+  end
+
   defp fetch(lang, keyword) do
     Gherkin.Dialect.for(lang) |> Map.get(keyword)
   end
