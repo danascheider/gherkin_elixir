@@ -49,4 +49,10 @@ defmodule GherkinLineTest do
 
     assert Gherkin.Line.is_scenario_header?(line, "en") == false
   end
+
+  test ".is_step? returns true if the line is a step" do
+    line = %Gherkin.Line{text: "Quando clicco su 'Login'"}
+
+    assert Gherkin.Line.is_step?(line, "it") == true
+  end
 end
