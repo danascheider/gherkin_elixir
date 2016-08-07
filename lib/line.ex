@@ -3,6 +3,8 @@ defmodule Gherkin.Line do
 
   def trimmed_text(line), do: String.trim_leading(line.text)
 
+  def indent(line), do: String.length(line.text) - String.length(trimmed_text(line))
+
   def is_comment?(line), do: starts_with?(line, "#")
 
   def is_background_header?(line, language \\ "en") do

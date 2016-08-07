@@ -8,6 +8,12 @@ defmodule GherkinLineTest do
     assert Gherkin.Line.trimmed_text(line) == "Scenario: Hello world\n"
   end
 
+  test ".indent\\1 returns the level of indent" do
+    line = %Gherkin.Line{text: "   Scenario: Hello world\n"}
+
+    assert Gherkin.Line.indent(line) == 3
+  end
+
   test ".is_comment?\\1 returns true if the line is a comment" do
     line = %Gherkin.Line{text: "# This is a comment", line_number: 14}
 
