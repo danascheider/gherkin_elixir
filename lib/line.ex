@@ -17,6 +17,10 @@ defmodule Gherkin.Line do
     match_title_line(line, Gherkin.Dialect.scenario_keywords(language))
   end
 
+  def is_scenario_outline_header?(line, language \\ "en") do
+    match_title_line(line, Gherkin.Dialect.scenario_outline_keywords(language))
+  end
+
   def is_step?(line, language \\ "en") do
     match_step_line(line, Gherkin.Dialect.step_keywords(language))
   end
@@ -30,7 +34,7 @@ defmodule Gherkin.Line do
   end
 
   defp match_title_line(line, keywords) do
-    keyword = Enum.find(keywords, fn(keyword) -> starts_with?(line, "#{keyword}: ") end)
+    keyword = Enum.find(keywords, fn(keyword) -> starts_with?(line, "#{keyword}:") end)
     !!keyword
   end
 
