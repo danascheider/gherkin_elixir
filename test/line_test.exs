@@ -14,13 +14,13 @@ defmodule GherkinLineTest do
     assert Gherkin.Line.is_comment?(line) == false
   end
 
-  assert ".is_examples_header?\\2 returns true if the line is an examples header" do
+  test ".is_examples_header?\\2 returns true if the line is an examples header" do
     line = %Gherkin.Line{text: "    Ejemplos:"}
 
     assert Gherkin.Line.is_examples_header?(line, "es") == true
   end
 
-  assert ".is_examples_header?\\2 returns false if the line is not an examples header" do
+  test ".is_examples_header?\\2 returns false if the line is not an examples header" do
     line = %Gherkin.Line{text: "    Ejemplos:"}
 
     assert Gherkin.Line.is_examples_header?(line, "en") == false
@@ -123,6 +123,16 @@ defmodule GherkinLineTest do
   end
 
   test ".is_table_row?\\1 returns true if the line is a table row" do
+    line = %Gherkin.Line{text: "      | Foo    | Bar   |"}
+
+    assert Gherkin.Line.is_table_row?(line) == true
+  end
+
+  test ".is_table_row?\\1 returns false if the line is not a table row" do
+    line = %Gherkin.Line{text: "Feature: Hello world"}
+
+    assert Gherkin.Line.is_table_row?(line) == false
+  end
 
   test ".is_docstring_separator?\\1 returns false if the line is not a docstring separator" do
     line = %Gherkin.Line{text: " ... "}

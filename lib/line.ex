@@ -3,8 +3,6 @@ defmodule Gherkin.Line do
 
   def trimmed_text(line), do: String.trim_leading(line.text)
 
-  def starts_with?(line, keyword), do: trimmed_text(line) |> String.starts_with?(keyword)
-
   def is_comment?(line), do: starts_with?(line, "#")
 
   def is_background_header?(line, language \\ "en") do
@@ -33,6 +31,10 @@ defmodule Gherkin.Line do
     match_step_line(line, Gherkin.Dialect.step_keywords(language))
   end
 
+  def is_table_row?(line) do
+    starts_with?(line, "|") && ends_with?(line, "|")
+  end
+
   def empty?(line), do: trimmed_text(line) == ""
 
   def is_docstring_separator?(line) do
@@ -40,6 +42,10 @@ defmodule Gherkin.Line do
 
     Regex.match?(separator, trimmed_text(line))
   end
+
+  defp starts_with?(line, keyword), do: trimmed_text(line) |> String.starts_with?(keyword)
+
+  defp ends_with?(line, keyword), do: String.trim_trailing(line.text) |> String.ends_with?(keyword)
 
   defp match_title_line(line, keywords) do
     keyword = Enum.find(keywords, fn(keyword) -> starts_with?(line, "#{keyword}:") end)
