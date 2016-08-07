@@ -25,4 +25,16 @@ defmodule GherkinLineTest do
 
     assert Gherkin.Line.is_language_header?(line) == false
   end
+
+  test ".is_feature_header? returns true if the line is a feature header" do
+    line = %Gherkin.Line{text: "Funzionalità: Buon giorno mondo"}
+
+    assert Gherkin.Line.is_feature_header?(line, "it") == true
+  end
+
+  test ".is_feature_header? returns true if the line is not a feature header" do
+    line = %Gherkin.Line{text: "Funzionalità: Buon giorno mondo"}
+
+    assert Gherkin.Line.is_feature_header?(line, "en") == false
+  end
 end
