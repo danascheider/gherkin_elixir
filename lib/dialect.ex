@@ -25,4 +25,28 @@ defmodule Gherkin.Dialect do
 
     %Gherkin.Dialect{} |> Map.merge(language)
   end
+
+  def and_keywords(dialect), do: fetch(dialect, :and)
+
+  def background_keywords(dialect), do: fetch(dialect, :background)
+
+  def but_keywords(dialect), do: fetch(dialect, :but)
+
+  def examples_keywords(dialect), do: fetch(dialect, :examples)
+
+  def feature_keywords(dialect), do: fetch(dialect, :feature)
+
+  def given_keywords(dialect), do: fetch(dialect, :given)
+
+  def scenario_keywords(dialect), do: fetch(dialect, :scenario)
+
+  def scenario_outline_keywords(dialect), do: fetch(dialect, :scenarioOutline)
+
+  def then_keywords(dialect), do: fetch(dialect, :then)
+
+  def when_keywords(dialect), do: fetch(dialect, :when)
+
+  defp fetch(lang, keyword) do
+    Gherkin.Dialect.for(lang) |> Map.get(keyword)
+  end
 end

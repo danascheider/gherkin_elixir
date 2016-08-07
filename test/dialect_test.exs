@@ -20,4 +20,44 @@ defmodule DialectTest do
 
     assert Gherkin.Dialect.for("fr") == french
   end
+
+  test ".and_keywords\\1 returns the and keywords for the given language" do
+    assert Gherkin.Dialect.and_keywords("fr") == ["* ", "Et que ", "Et qu'", "Et "]
+  end
+
+  test ".background_keywords\\1 returns the background keywords for the given language" do
+    assert Gherkin.Dialect.background_keywords("fr") == ["Contexte"]
+  end
+
+  test ".but_keywords\\1 returns the but keywords for the given language" do
+    assert Gherkin.Dialect.but_keywords("it") == ["* ", "Ma "]
+  end
+
+  test ".examples_keywords\\1 returns the examples keywords for the given language" do
+    assert Gherkin.Dialect.examples_keywords("es") == ["Ejemplos"]
+  end
+
+  test ".feature_keywords\\1 returns the feature keywords for the given language" do
+    assert Gherkin.Dialect.feature_keywords("it") == ["Funzionalità"]
+  end
+
+  test ".given_keywords\\1 returns the given keywords for the given language" do
+    assert Gherkin.Dialect.given_keywords("it") == ["* ", "Dato ", "Data ", "Dati ", "Date "]
+  end
+
+  test ".scenario_keywords\\1 returns the scenario keywords for the given language" do
+    assert Gherkin.Dialect.scenario_keywords("fr") == ["Scénario"]
+  end
+
+  test ".scenario_outline_keywords\\1 returns the scenario outline keywords for the given language" do
+    assert Gherkin.Dialect.scenario_outline_keywords("fr") ==  ["Plan du scénario", "Plan du Scénario"]
+  end
+
+  test ".then_keywords\\1 returns the then keywords for the given language" do
+    assert Gherkin.Dialect.then_keywords("fr") == ["* ", "Alors "]
+  end
+
+  test ".when_keywords\\1 returns the when keywords for the given language" do
+    assert Gherkin.Dialect.when_keywords("it") == ["* ", "Quando "]
+  end
 end
