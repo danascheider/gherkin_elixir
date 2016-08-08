@@ -5,6 +5,11 @@ defmodule Gherkin.Line do
 
   def indent(line), do: String.length(line.text) - String.length(trimmed_text(line))
 
+  def get_rest_trimmed(line, index) do
+    text = trimmed_text(line) 
+    String.slice(text, index..String.length(text) - 1) |> String.trim
+  end
+
   def is_comment?(line), do: starts_with?(line, "#")
 
   def is_background_header?(line, language \\ "en") do

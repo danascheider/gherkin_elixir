@@ -175,4 +175,10 @@ defmodule GherkinLineTest do
 
     assert Gherkin.Line.is_docstring_separator?(line) == false
   end
+
+  test ".get_rest_trimmed\\2 returns the trimmed line without leading n characters" do
+    line = %Gherkin.Line{text: "Feature: Test"}
+
+    assert Gherkin.Line.get_rest_trimmed(line, 8) == "Test"
+  end
 end
