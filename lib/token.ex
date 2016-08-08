@@ -38,6 +38,18 @@ defmodule Gherkin.Token do
           matched_keyword: keyword,
           matched_text: text
         }
+      Gherkin.Line.is_scenario_outline_header?(token.line, token.matched_gherkin_dialect) ->
+        keyword = Gherkin.Dialect.scenario_outline_keywords(token.matched_gherkin_dialect)
+                  |> Enum.find(fn(k) -> Gherkin.Line.starts_with?(token.line, k)end)
+        text    = Gherkin.Line.get_rest_trimmed(token.line, String.length("#{keyword}:"))
+
+        %{
+          token |
+          type: :ScenarioOutlineLine,
+          indent: Gherkin.Line.indent(token.line),
+          matched_keyword: keyword,
+          matched_text: text
+        }
     end
   end
 
