@@ -56,7 +56,7 @@ defmodule Gherkin.Line do
     Regex.match?(separator, trimmed_text(line))
   end
 
-  defp starts_with?(line, keyword), do: trimmed_text(line) |> String.starts_with?(keyword)
+  def starts_with?(line, keyword), do: trimmed_text(line) |> String.starts_with?(keyword)
 
   defp ends_with?(line, keyword), do: String.trim_trailing(line.text) |> String.ends_with?(keyword)
 
