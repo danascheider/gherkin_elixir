@@ -34,4 +34,16 @@ defmodule GherkinTokenTest do
 
     assert Gherkin.Token.transform(token) == output
   end
+
+  test ".transform\\1 when the token is a scenario header transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "Scenario: Foo bar"}}
+    output = %{
+      token |
+      type: :ScenarioLine,
+      matched_keyword: "Scenario",
+      matched_text: "Foo bar"
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
 end

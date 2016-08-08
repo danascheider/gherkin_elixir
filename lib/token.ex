@@ -15,13 +15,25 @@ defmodule Gherkin.Token do
       Gherkin.Line.is_tags?(token.line) ->
         %{token | type: :Tags, indent: Gherkin.Line.indent(token.line), matched_items: get_tags(token.line)}
       Gherkin.Line.is_feature_header?(token.line, token.matched_gherkin_dialect) ->
-        keywords = Gherkin.Dialect.feature_keywords(token.matched_gherkin_dialect)
-        keyword  = Enum.find(keywords, fn(k) -> Gherkin.Line.starts_with?(token.line, k) end)
-        text     = Gherkin.Line.get_rest_trimmed(token.line, String.length("#{keyword}:"))
+        keyword = Gherkin.Dialect.feature_keywords(token.matched_gherkin_dialect)
+                  |>Enum.find(fn(k) -> Gherkin.Line.starts_with?(token.line, k) end)
+        text    = Gherkin.Line.get_rest_trimmed(token.line, String.length("#{keyword}:"))
 
         %{
           token | 
           type: :FeatureLine, 
+          indent: Gherkin.Line.indent(token.line),
+          matched_keyword: keyword,
+          matched_text: text
+        }
+      Gherkin.Line.is_scenario_header?(token.line, token.matched_gherkin_dialect) ->
+        keyword = Gherkin.Dialect.scenario_keywords(token.matched_gherkin_dialect)
+                  |> Enum.find(fn(k) -> Gherkin.Line.starts_with?(token.line, k) end)
+        text    = Gherkin.Line.get_rest_trimmed(token.line, String.length("#{keyword}:"))
+
+        %{
+          token |
+          type: :ScenarioLine,
           indent: Gherkin.Line.indent(token.line),
           matched_keyword: keyword,
           matched_text: text
