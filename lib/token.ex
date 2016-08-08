@@ -15,41 +15,23 @@ defmodule Gherkin.Token do
       Gherkin.Line.is_tags?(token.line) ->
         %{token | type: :Tags, indent: Gherkin.Line.indent(token.line), matched_items: get_tags(token.line)}
       Gherkin.Line.is_feature_header?(token.line, token.matched_gherkin_dialect) ->
-        keyword = Gherkin.Dialect.feature_keywords(token.matched_gherkin_dialect)
-                  |>Enum.find(fn(k) -> Gherkin.Line.starts_with?(token.line, k) end)
-        text    = Gherkin.Line.get_rest_trimmed(token.line, String.length("#{keyword}:"))
-
-        %{
-          token | 
-          type: :FeatureLine, 
-          indent: Gherkin.Line.indent(token.line),
-          matched_keyword: keyword,
-          matched_text: text
-        }
+        transform_title_line(
+          token, 
+          :FeatureLine, 
+          Gherkin.Dialect.feature_keywords(token.matched_gherkin_dialect)
+          )
       Gherkin.Line.is_scenario_header?(token.line, token.matched_gherkin_dialect) ->
-        keyword = Gherkin.Dialect.scenario_keywords(token.matched_gherkin_dialect)
-                  |> Enum.find(fn(k) -> Gherkin.Line.starts_with?(token.line, k) end)
-        text    = Gherkin.Line.get_rest_trimmed(token.line, String.length("#{keyword}:"))
-
-        %{
-          token |
-          type: :ScenarioLine,
-          indent: Gherkin.Line.indent(token.line),
-          matched_keyword: keyword,
-          matched_text: text
-        }
+        transform_title_line(
+          token,
+          :ScenarioLine,
+          Gherkin.Dialect.scenario_keywords(token.matched_gherkin_dialect)
+          )
       Gherkin.Line.is_scenario_outline_header?(token.line, token.matched_gherkin_dialect) ->
-        keyword = Gherkin.Dialect.scenario_outline_keywords(token.matched_gherkin_dialect)
-                  |> Enum.find(fn(k) -> Gherkin.Line.starts_with?(token.line, k)end)
-        text    = Gherkin.Line.get_rest_trimmed(token.line, String.length("#{keyword}:"))
-
-        %{
-          token |
-          type: :ScenarioOutlineLine,
-          indent: Gherkin.Line.indent(token.line),
-          matched_keyword: keyword,
-          matched_text: text
-        }
+        transform_title_line(
+          token,
+          :ScenarioOutlineLine,
+          Gherkin.Dialect.scenario_outline_keywords(token.matched_gherkin_dialect)
+          )
     end
   end
 
@@ -71,5 +53,18 @@ defmodule Gherkin.Token do
     Enum.with_index(list)
     |> Enum.filter(fn({item, _}) -> item == element end)
     |> Enum.map(fn({_, index}) -> index + 1 end)
+  end
+
+  defp transform_title_line(token, type, keywords) do
+    keyword = Enum.find(keywords, fn(k) -> Gherkin.Line.starts_with?(token.line, k) end)
+    text    = Gherkin.Line.get_rest_trimmed(token.line, String.length("#{keyword}:"))
+
+    %{
+      token |
+      type: type,
+      indent: Gherkin.Line.indent(token.line),
+      matched_keyword: keyword,
+      matched_text: text
+    }
   end
 end
