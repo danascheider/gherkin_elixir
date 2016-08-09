@@ -53,6 +53,9 @@ defmodule Gherkin.Token do
         %{token | type: :Language, matched_text: language}
       Gherkin.Line.is_comment?(token.line) ->
         %{token | type: :Comment, matched_text: token.line.text}
+      Gherkin.Line.is_docstring_separator?(token.line) ->
+        keyword = get_docstring_separator(token.line)
+        %{token | type: :DocStringSeparator, matched_keyword: keyword, matched_text: Gherkin.Line.get_rest_trimmed(token.line, 3)}
     end
   end
 
@@ -73,6 +76,14 @@ defmodule Gherkin.Token do
             |> Enum.map(fn(str) -> String.trim(str) end)
             |> Enum.filter(fn(str) -> str != "" end)
             |> Enum.zip(cols)
+  end
+
+  defp get_docstring_separator(line) do
+    cond do
+      Gherkin.Line.starts_with?(line, "\"\"\"") -> "\"\"\""
+      Gherkin.Line.starts_with?(line, "```") -> "```"
+      true -> ""
+    end
   end
 
   defp get_columns(text, character) do

@@ -130,4 +130,16 @@ defmodule GherkinTokenTest do
 
     assert Gherkin.Token.transform(token) == output
   end
+
+  test ".transform\\1 when the token is a docstring separator transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "    \"\"\"json"}}
+    output = %{
+      token |
+      type: :DocStringSeparator,
+      matched_keyword: "\"\"\"",
+      matched_text: "json"
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
 end
