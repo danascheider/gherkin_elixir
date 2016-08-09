@@ -48,6 +48,11 @@ defmodule Gherkin.Token do
         %{token | type: :TableRow, matched_items: get_table_cells(token.line) }
       Gherkin.Line.empty?(token.line) ->
         %{token | type: :Empty, indent: 0}
+      Gherkin.Line.is_language_header?(token.line) ->
+        language = Gherkin.Line.get_rest_trimmed(token.line, String.length("# language:"))
+        %{token | type: :Language, matched_text: language}
+      Gherkin.Line.is_comment?(token.line) ->
+        %{token | type: :Comment, matched_text: token.line.text}
     end
   end
 
