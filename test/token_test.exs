@@ -58,4 +58,16 @@ defmodule GherkinTokenTest do
 
     assert Gherkin.Token.transform(token) == output
   end
+
+  test ".transform\\1 when the token is a background header transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "Contesto: Qualcosa"}, matched_gherkin_dialect: "it"}
+    output = %{
+      token |
+      type: :BackgroundLine,
+      matched_keyword: "Contesto",
+      matched_text: "Qualcosa"
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
 end

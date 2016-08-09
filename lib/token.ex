@@ -32,6 +32,12 @@ defmodule Gherkin.Token do
           :ScenarioOutlineLine,
           Gherkin.Dialect.scenario_outline_keywords(token.matched_gherkin_dialect)
           )
+      Gherkin.Line.is_background_header?(token.line, token.matched_gherkin_dialect) ->
+        transform_title_line(
+          token,
+          :BackgroundLine,
+          Gherkin.Dialect.background_keywords(token.matched_gherkin_dialect)
+          )
     end
   end
 
