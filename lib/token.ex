@@ -45,7 +45,7 @@ defmodule Gherkin.Token do
           Gherkin.Dialect.examples_keywords(token.matched_gherkin_dialect)
           )
       Gherkin.Line.is_table_row?(token.line) ->
-        %{token | type: :TableRow, matched_items: get_table_cells(token.line) }
+        %{token | type: :TableRow, matched_items: get_table_cells(token.line), indent: Gherkin.Line.indent(token.line) }
       Gherkin.Line.empty?(token.line) ->
         %{token | type: :Empty, indent: 0}
       Gherkin.Line.is_language_header?(token.line) ->
@@ -55,7 +55,15 @@ defmodule Gherkin.Token do
         %{token | type: :Comment, matched_text: token.line.text}
       Gherkin.Line.is_docstring_separator?(token.line) ->
         keyword = get_docstring_separator(token.line)
-        %{token | type: :DocStringSeparator, matched_keyword: keyword, matched_text: Gherkin.Line.get_rest_trimmed(token.line, 3)}
+        indent  = Gherkin.Line.indent(token.line)
+        %{token | type: :DocStringSeparator, indent: indent, matched_keyword: keyword, matched_text: Gherkin.Line.get_rest_trimmed(token.line, 3)}
+      Gherkin.Line.is_step?(token.line) ->
+        keyword = Gherkin.Dialect.step_keywords(token.matched_gherkin_dialect)
+                  |> Enum.find(fn(k) -> Gherkin.Line.starts_with?(token.line, k) end)
+        text    = Gherkin.Line.get_rest_trimmed(token.line, String.length(keyword))
+        indent  = Gherkin.Line.indent(token.line) 
+
+        %{token | type: :StepLine, matched_keyword: keyword, matched_text: text, indent: indent}
     end
   end
 

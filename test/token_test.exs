@@ -88,6 +88,7 @@ defmodule GherkinTokenTest do
     output = %{
       token |
       type: :TableRow,
+      indent: 5,
       matched_items: [
         {"foo", 6},
         {"bar", 12},
@@ -131,13 +132,40 @@ defmodule GherkinTokenTest do
     assert Gherkin.Token.transform(token) == output
   end
 
-  test ".transform\\1 when the token is a docstring separator transforms the token" do
+  test ".transform\\1 when the token is a quote docstring separator transforms the token" do
     token  = %Gherkin.Token{line: %Gherkin.Line{text: "    \"\"\"json"}}
     output = %{
       token |
       type: :DocStringSeparator,
+      indent: 4,
       matched_keyword: "\"\"\"",
       matched_text: "json"
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
+
+  test ".transform\\1 when the token is a backtick docstring separator transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "    ```"}}
+    output = %{
+      token |
+      type: :DocStringSeparator,
+      indent: 4,
+      matched_keyword: "```",
+      matched_text: ""
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
+
+  test ".transform\\1 when the token is a step transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "    When I throw my computer out the window"}}
+    output = %{
+      token |
+      type: :StepLine,
+      indent: 4,
+      matched_keyword: "When ",
+      matched_text: "I throw my computer out the window"
     }
 
     assert Gherkin.Token.transform(token) == output
