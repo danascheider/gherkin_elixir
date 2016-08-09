@@ -46,6 +46,8 @@ defmodule Gherkin.Token do
           )
       Gherkin.Line.is_table_row?(token.line) ->
         %{token | type: :TableRow, matched_items: get_table_cells(token.line) }
+      Gherkin.Line.empty?(token.line) ->
+        %{token | type: :Empty, indent: 0}
     end
   end
 
@@ -61,10 +63,9 @@ defmodule Gherkin.Token do
   defp get_table_cells(line) do
     cols  = get_columns(line.text, "|")
 
-    cells = Gherkin.Line.trimmed_text(line)
-            |> String.trim_trailing
+    cells = String.trim(line.text)
             |> String.split("|")
-            |> Enum.map(fn(str) -> String.trim_trailing(str) |> String.trim_leading end)
+            |> Enum.map(fn(str) -> String.trim(str) end)
             |> Enum.filter(fn(str) -> str != "" end)
             |> Enum.zip(cols)
   end

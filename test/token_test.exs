@@ -97,4 +97,14 @@ defmodule GherkinTokenTest do
 
     assert Gherkin.Token.transform(token) == output
   end
+
+  test ".transform\\1 when the token is empty transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "  "}}
+    output = %{
+      token |
+      type: :Empty
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
 end
