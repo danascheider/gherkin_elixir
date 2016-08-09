@@ -70,4 +70,31 @@ defmodule GherkinTokenTest do
 
     assert Gherkin.Token.transform(token) == output
   end
+
+  test ".transform\\1 when the token is an examples header transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "Ejemplos:"}, matched_gherkin_dialect: "es"}
+    output = %{
+      token |
+      type: :ExamplesLine,
+      matched_keyword: "Ejemplos",
+      matched_text: ""
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
+
+  test ".transform\\1 when the token is a table row transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "     | foo | bar | baz | "}}
+    output = %{
+      token |
+      type: :TableRow,
+      matched_items: [
+        {"foo", 6},
+        {"bar", 12},
+        {"baz", 18}
+      ]
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
 end

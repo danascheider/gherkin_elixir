@@ -38,6 +38,14 @@ defmodule Gherkin.Token do
           :BackgroundLine,
           Gherkin.Dialect.background_keywords(token.matched_gherkin_dialect)
           )
+      Gherkin.Line.is_examples_header?(token.line, token.matched_gherkin_dialect) ->
+        transform_title_line(
+          token,
+          :ExamplesLine,
+          Gherkin.Dialect.examples_keywords(token.matched_gherkin_dialect)
+          )
+      Gherkin.Line.is_table_row?(token.line) ->
+        %{token | type: :TableRow, matched_items: get_table_cells(token.line) }
     end
   end
 
@@ -48,6 +56,17 @@ defmodule Gherkin.Token do
            |> String.trim_trailing 
            |> String.split(" ")
            |> Enum.zip(cols)
+  end
+
+  defp get_table_cells(line) do
+    cols  = get_columns(line.text, "|")
+
+    cells = Gherkin.Line.trimmed_text(line)
+            |> String.trim_trailing
+            |> String.split("|")
+            |> Enum.map(fn(str) -> String.trim_trailing(str) |> String.trim_leading end)
+            |> Enum.filter(fn(str) -> str != "" end)
+            |> Enum.zip(cols)
   end
 
   defp get_columns(text, character) do
