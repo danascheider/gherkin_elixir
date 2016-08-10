@@ -116,7 +116,8 @@ defmodule Gherkin.Token do
       type: type,
       indent: Gherkin.Line.indent(token.line),
       matched_keyword: keyword,
-      matched_text: text
+      matched_text: text,
+      location: %{token.location | column: Gherkin.Line.indent(token.line) + 1}
     }
   end
 end
