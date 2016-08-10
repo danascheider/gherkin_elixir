@@ -170,4 +170,16 @@ defmodule GherkinTokenTest do
 
     assert Gherkin.Token.transform(token) == output
   end
+
+  test ".transform\\1 when the token is something else transforms the token" do
+    token  = %Gherkin.Token{line: %Gherkin.Line{text: "     This is a comment. Or maybe a docstring line. Or perhaps a description."}}
+    output = %{
+      token |
+      type: :Other,
+      indent: 5,
+      matched_text: "This is a comment. Or maybe a docstring line. Or perhaps a description."
+    }
+
+    assert Gherkin.Token.transform(token) == output
+  end
 end
