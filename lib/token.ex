@@ -63,9 +63,9 @@ defmodule Gherkin.Token do
         text    = Gherkin.Line.get_rest_trimmed(token.line, String.length(keyword))
         indent  = Gherkin.Line.indent(token.line) 
 
-        %{token | type: :StepLine, matched_keyword: keyword, matched_text: text, indent: indent}
+        %{token | type: :StepLine, matched_keyword: keyword, matched_text: text, indent: indent, location: %{token.location | column: 1 + indent}}
       true ->
-        %{token | type: :Other, matched_text: Gherkin.Line.trimmed_text(token.line), indent: Gherkin.Line.indent(token.line)}
+        %{token | type: :Other, matched_text: Gherkin.Line.trimmed_text(token.line), indent: Gherkin.Line.indent(token.line), location: %{token.location | column: 1 + Gherkin.Line.indent(token.line)}}
     end
   end
 

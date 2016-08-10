@@ -165,7 +165,8 @@ defmodule GherkinTokenTest do
       type: :StepLine,
       indent: 4,
       matched_keyword: "When ",
-      matched_text: "I throw my computer out the window"
+      matched_text: "I throw my computer out the window",
+      location: %{line: 1, column: 5}
     }
 
     assert Gherkin.Token.transform(token) == output
@@ -177,7 +178,8 @@ defmodule GherkinTokenTest do
       token |
       type: :Other,
       indent: 5,
-      matched_text: "This is a comment. Or maybe a docstring line. Or perhaps a description."
+      matched_text: "This is a comment. Or maybe a docstring line. Or perhaps a description.",
+      location: %{line: 1, column: 6}
     }
 
     assert Gherkin.Token.transform(token) == output
