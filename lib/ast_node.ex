@@ -14,4 +14,8 @@ defmodule Gherkin.AstNode do
   def get_single(ast_node, rule_type) do
     Map.get(ast_node.sub_items, rule_type, []) |> List.first
   end
+
+  def get_items(ast_node, rule_type) do
+    Map.get(ast_node.sub_items, rule_type, [])
+  end
 end
