@@ -14,11 +14,12 @@ defmodule Gherkin.Dialect do
 
   @dialect_path Path.expand("./lib/gherkin-languages.json")
 
-  {_, json}     = File.read(@dialect_path)
-  {_, contents} = JSON.decode(json)
+  {:ok, json}     = File.read(@dialect_path)
+  {:ok, contents} = JSON.decode(json)
 
   @dialects contents
-
+  
+  # TODO: check if for\1 is used elsewhere, merge into fetch\2 if not 
   def for(dialect) do
     language = Map.get(@dialects, dialect)
                |> Enum.reduce(%{}, fn({key, val}, acc) -> Map.put(acc, String.to_atom(key), val) end)
