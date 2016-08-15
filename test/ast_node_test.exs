@@ -103,4 +103,43 @@ defmodule GherkinAstNodeTest do
 
     assert Gherkin.AstNode.transform(ast_node) == output
   end
+
+  test ".transform\\1 transforms a :Step node with a DataTable argument" do
+    data_table = %Gherkin.Token{
+      type: :DataTable,
+      line: %Gherkin.Line{text: "      | This | Is | A | Table |", line_number: 4},
+      indent: 6,
+      location: %{line: 4, column: 7},
+      matched_text: "This is a docstring"
+    }
+
+    ast_node = %Gherkin.AstNode{
+      rule_type: :Step,
+      sub_items: %{
+        StepLine: [
+          %Gherkin.Token{
+            type: :StepLine, 
+            line: %Gherkin.Line{text: "    Given foo bar", line_number: 3},
+            indent: 4,
+            location: %{line: 3, column: 5},
+            matched_keyword: "* ", 
+            matched_text: "foo bar"
+          }
+        ],
+        DataTable: [
+          data_table
+        ]
+      }
+    }
+
+    output = %{
+      type: :Step,
+      location: %{line: 3, column: 5},
+      keyword: "* ",
+      text: "foo bar",
+      argument: data_table
+    }
+
+    assert Gherkin.AstNode.transform(ast_node) == output
+  end
 end

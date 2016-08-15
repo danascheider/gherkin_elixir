@@ -25,7 +25,7 @@ defmodule Gherkin.AstNode do
 
   def transform(ast_node, :Step) do
     step_line     = get_single(ast_node, :StepLine)
-    step_argument = get_single(ast_node, :DocString)
+    step_argument = get_single(ast_node, :DataTable) || get_single(ast_node, :DocString) || nil
 
     %{
       type: :Step,
