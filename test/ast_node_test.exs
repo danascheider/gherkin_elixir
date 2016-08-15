@@ -37,7 +37,7 @@ defmodule GherkinAstNodeTest do
     assert Gherkin.AstNode.get_items(ast_node, :ScenarioLine) == []
   end
 
-  test ".transform\\1 transforms a :Step node" do
+  test ".transform\\1 transforms a :Step node with no argument" do
     ast_node = %Gherkin.AstNode{
       rule_type: :Step,
       sub_items: %{
@@ -58,7 +58,47 @@ defmodule GherkinAstNodeTest do
       type: :Step,
       location: %{line: 3, column: 5},
       keyword: "* ",
-      text: "foo bar"
+      text: "foo bar",
+      argument: nil
+    }
+
+    assert Gherkin.AstNode.transform(ast_node) == output
+  end
+
+  test ".transform\\1 transforms a :Step node with a DocString argument" do
+    docstring = %Gherkin.Token{
+      type: :DocString,
+      line: %Gherkin.Line{text: "      This is a docstring", line_number: 4},
+      indent: 6,
+      location: %{line: 4, column: 7},
+      matched_text: "This is a docstring"
+    }
+
+    ast_node = %Gherkin.AstNode{
+      rule_type: :Step,
+      sub_items: %{
+        StepLine: [
+          %Gherkin.Token{
+            type: :StepLine, 
+            line: %Gherkin.Line{text: "    Given foo bar", line_number: 3},
+            indent: 4,
+            location: %{line: 3, column: 5},
+            matched_keyword: "* ", 
+            matched_text: "foo bar"
+          }
+        ],
+        DocString: [
+          docstring
+        ]
+      }
+    }
+
+    output = %{
+      type: :Step,
+      location: %{line: 3, column: 5},
+      keyword: "* ",
+      text: "foo bar",
+      argument: docstring
     }
 
     assert Gherkin.AstNode.transform(ast_node) == output

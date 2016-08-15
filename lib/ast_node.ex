@@ -24,13 +24,15 @@ defmodule Gherkin.AstNode do
   end
 
   def transform(ast_node, :Step) do
-    step_line = get_single(ast_node, :StepLine)
+    step_line     = get_single(ast_node, :StepLine)
+    step_argument = get_single(ast_node, :DocString)
 
     %{
       type: :Step,
       location: step_line.location,
       keyword: step_line.matched_keyword,
-      text: step_line.matched_text
+      text: step_line.matched_text,
+      argument: step_argument
     }
   end
 end
