@@ -1,6 +1,6 @@
-defmodule GherkinLexerTest do
+defmodule GherkinTokenScannerTest do
   use ExUnit.Case
-  doctest Gherkin.Lexer
+  doctest Gherkin.TokenScanner
 
   test ".tokenize\\3 tokenizes a simple Gherkin document" do
     document = "Feature: Test\n  Scenario: Foo bar\n"
@@ -32,7 +32,7 @@ defmodule GherkinLexerTest do
       }
     ]
 
-    assert Gherkin.Lexer.tokenize(document, "/features/test.feature", "en") == output
+    assert Gherkin.TokenScanner.tokenize(document, "/features/test.feature", "en") == output
   end
 
   test ".tokenize\\3 tokenizes a less simple Gherkin document" do
@@ -52,6 +52,6 @@ defmodule GherkinLexerTest do
       %Gherkin.Token{type: :EOF, line: %Gherkin.Line{text: nil, line_number: 12}, location: %{line: 12, column: 1}}
     ]
 
-    assert Gherkin.Lexer.tokenize(document, "/features/test.feature", "en") == output
+    assert Gherkin.TokenScanner.tokenize(document, "/features/test.feature", "en") == output
   end
 end

@@ -1,4 +1,4 @@
-defmodule Gherkin.Lexer do
+defmodule Gherkin.TokenScanner do
   def tokenize(document, _url, language \\ "en") do
     String.split(document, "\n") 
     |> Enum.with_index 
