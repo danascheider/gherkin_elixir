@@ -36,4 +36,31 @@ defmodule GherkinAstNodeTest do
 
     assert Gherkin.AstNode.get_items(ast_node, :ScenarioLine) == []
   end
+
+  test ".transform\\1 transforms a :Step node" do
+    ast_node = %Gherkin.AstNode{
+      rule_type: :Step,
+      sub_items: %{
+        StepLine: [
+          %Gherkin.Token{
+            type: :StepLine, 
+            line: %Gherkin.Line{text: "    Given foo bar", line_number: 3},
+            indent: 4,
+            location: %{line: 3, column: 5},
+            matched_keyword: "* ", 
+            matched_text: "foo bar"
+          }
+        ]
+      }
+    }
+
+    output = %{
+      type: :Step,
+      location: %{line: 3, column: 5},
+      keyword: "* ",
+      text: "foo bar"
+    }
+
+    assert Gherkin.AstNode.transform(ast_node) == output
+  end
 end

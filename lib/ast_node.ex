@@ -18,4 +18,19 @@ defmodule Gherkin.AstNode do
   def get_items(ast_node, rule_type) do
     Map.get(ast_node.sub_items, rule_type, [])
   end
+
+  def transform(ast_node) do
+    transform(ast_node, ast_node.rule_type)
+  end
+
+  def transform(ast_node, :Step) do
+    step_line = get_single(ast_node, :StepLine)
+
+    %{
+      type: :Step,
+      location: step_line.location,
+      keyword: step_line.matched_keyword,
+      text: step_line.matched_text
+    }
+  end
 end
